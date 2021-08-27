@@ -1,0 +1,24 @@
+#include "stdio.h"
+#include "HX711.h"
+
+#define C 43000.0                      // Load cell kalibrasyon değeri. Siz burada kendi değerinizi kendiniz bulacaksınız. Hiç yük yokken ekranda 0 görene kadar oynamanız lazım...
+#define DT  2                         // Hx711'den çıkan DT kablosunun arduino üzerindeki yeri. Buradaki 6 sizin bağlantı yaptığınız yere göre değiştirilmesi lazım.
+#define SCK  3                        // Hx711'den çıkan SCK kablosunun arduino üzerindeki yeri. Buradaki 2 sizin bağlantı yaptığınız yere göre değiştirilmesi lazım.
+
+HX711 scale;
+
+void setup() {
+
+  Serial.begin(9600);               // Bu değerin, Seri Port ekranının sağ altında bulunan değerle aynı olması gerekiyor...
+  Serial.println("EVR Mechanics");   // Yazılım başladığında Seri Port'a vereceği başlangıç yazısı. Bunu istediğinz birşey yapabilir veya satırı silerek komple kaldırabilirsiniz...
+  scale.begin(DT, SCK);
+  scale.set_scale(C);
+  scale.tare(); 
+}
+void loop() {
+  Serial.print("Force: ");
+  Serial.print(scale.get_units(),3);      // Buradaki 3 ekrana çıkan değerin (.)dan sonraki basamak sayısı.
+  Serial.print(" N");                   // Sonucun birim değeri..
+  Serial.println();
+  
+}
